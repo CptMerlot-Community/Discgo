@@ -1,4 +1,4 @@
-module discord-bot
+module github.com/CptMerlot-Community/Discgo
 
 go 1.17
 

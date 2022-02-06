@@ -6,23 +6,26 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/CptMerlot-Community/Discgo/handlers"
+	"github.com/CptMerlot-Community/Discgo/session"
+
 	"github.com/bwmarrin/discordgo"
 )
 
 var TOKEN = ""
 
 func init() {
-	CreateDiscordSession()
+	session.CreateDiscordSession()
 	BuildCommands()
-	CreateSlashHandler()
+	handlers.CreateSlashHandler()
 }
 
 func main() {
 
-	Discord.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
+	session.Discord.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
 		log.Println("Bot is up!")
 	})
-	err := Discord.Open()
+	err := session.Discord.Open()
 	if err != nil {
 		log.Fatalf("Cannot open the session: %v", err)
 	}
@@ -32,7 +35,7 @@ func main() {
 	<-stop
 	log.Println("Gracefully shuting down")
 
-	err = Discord.Close()
+	err = session.Discord.Close()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
