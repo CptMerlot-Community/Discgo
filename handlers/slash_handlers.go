@@ -1,17 +1,18 @@
-package main
+package handlers
 
 import (
 	"fmt"
 	"log"
 
+	"github.com/CptMerlot-Community/Discgo/session"
 	"github.com/bwmarrin/discordgo"
 )
 
 func CreateSlashHandler() {
-	if Discord == nil {
+	if session.Discord == nil {
 		log.Panicln("Discord Session not setup")
 	}
-	Discord.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	session.Discord.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		switch i.ApplicationCommandData().Name {
 		case "hello":
 			handlerHelloSlash(s, i)
@@ -42,10 +43,17 @@ func handleEchoSubHello(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 }
 func handleUserSubHello(s *discordgo.Session, i *discordgo.InteractionCreate) {
+
+	user := i.User
+
+	if user == nil {
+		user = i.Member.User
+	}
+
 	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
-			Content: fmt.Sprintf("Grettings %s", i.User.Username),
+			Content: fmt.Sprintf("Grettings %s", user.Username),
 		}})
 	if err != nil {
 		fmt.Println(err)

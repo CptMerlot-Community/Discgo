@@ -3,12 +3,13 @@ package main
 import (
 	"log"
 
+	"github.com/CptMerlot-Community/Discgo/session"
 	"github.com/bwmarrin/discordgo"
 )
 
 func BuildCommands() {
 	var commands = []*discordgo.ApplicationCommand{}
-	if Discord != nil {
+	if session.Discord != nil {
 		commands = []*discordgo.ApplicationCommand{
 			{
 				Name:        "hello",
@@ -50,7 +51,7 @@ func BuildCommands() {
 func registerCommands(commands []*discordgo.ApplicationCommand) {
 
 	for _, c := range commands {
-		_, err := Discord.ApplicationCommandCreate(APP_ID, GUILD_ID, c)
+		_, err := session.Discord.ApplicationCommandCreate(session.APP_ID, session.GUILD_ID, c)
 		if err != nil {
 			log.Printf("Command %s had error %s", c.Name, err.Error())
 		}
