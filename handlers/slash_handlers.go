@@ -8,16 +8,21 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func CreateSlashHandler() {
-	if session.Discord == nil {
+func CreateSlashHandler(s *session.Session) {
+
+	if s == nil {
 		log.Panicln("Discord Session not setup")
 	}
-	session.Discord.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		switch i.ApplicationCommandData().Name {
-		case "hello":
-			handlerHelloSlash(s, i)
-		}
-	})
+	as := s.GetActiveSession()
+	if as != nil {
+		as.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			switch i.ApplicationCommandData().Name {
+			case "hello":
+				handlerHelloSlash(s, i)
+			}
+		})
+	}
+
 }
 
 func handlerHelloSlash(s *discordgo.Session, i *discordgo.InteractionCreate) {

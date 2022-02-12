@@ -8,12 +8,32 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-const APP_ID = ""
-const GUILD_ID = ""
+type Session struct {
+	AppID          string
+	GuildID        string
+	discordSession *discordgo.Session
+}
 
-var Discord *discordgo.Session
+func (s Session) GetActiveSession() *discordgo.Session {
+	return s.discordSession
+}
 
-func CreateDiscordSession() {
+func (s Session) RegisterCommands(commands []*discordgo.ApplicationCommand) {
+
+	for _, c := range commands {
+		_, err := s.discordSession.ApplicationCommandCreate(s.AppID, s.GuildID, c)
+		if err != nil {
+			log.Printf("Command %s had error %s", c.Name, err.Error())
+		}
+	}
+
+}
+
+func CreateDiscordSession(appID, guildID string) *Session {
+	s := &Session{
+		AppID:   appID,
+		GuildID: guildID,
+	}
 
 	f, err := os.ReadFile("C:\\Users\\cptme\\SUPER_SECRET_TOKEN_BOI")
 	if err != nil {
@@ -22,9 +42,11 @@ func CreateDiscordSession() {
 
 	TOKEN := string(f)
 
-	Discord, err = discordgo.New(fmt.Sprintf("Bot %s", TOKEN))
+	s.discordSession, err = discordgo.New(fmt.Sprintf("Bot %s", TOKEN))
 	if err != nil {
 		log.Panicln(err)
 	}
+
+	return s
 
 }
