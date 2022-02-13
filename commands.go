@@ -38,6 +38,10 @@ func BuildCommands(s *session.Session) {
 					},
 				},
 			},
+			{
+				Name:        "test",
+				Description: "basic test command",
+			},
 		}
 	}
 
