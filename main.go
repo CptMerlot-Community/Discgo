@@ -12,8 +12,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var TOKEN = ""
-
 const APP_ID = ""
 const GUILD_ID = ""
 

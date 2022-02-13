@@ -8,6 +8,8 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var TOKEN_PATH = os.Getenv("TOKEN_PATH")
+
 type Session struct {
 	AppID          string
 	GuildID        string
@@ -35,7 +37,7 @@ func CreateDiscordSession(appID, guildID string) *Session {
 		GuildID: guildID,
 	}
 
-	f, err := os.ReadFile("C:\\Users\\cptme\\SUPER_SECRET_TOKEN_BOI")
+	f, err := os.ReadFile(TOKEN_PATH)
 	if err != nil {
 		log.Panicln(err)
 	}
