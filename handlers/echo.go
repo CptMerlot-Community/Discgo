@@ -2,28 +2,9 @@ package handlers
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/CptMerlot-Community/Discgo/session"
 	"github.com/bwmarrin/discordgo"
 )
-
-func CreateSlashHandler(s *session.Session) {
-
-	if s == nil {
-		log.Panicln("Discord Session not setup")
-	}
-	as := s.GetActiveSession()
-	if as != nil {
-		as.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-			switch i.ApplicationCommandData().Name {
-			case "hello":
-				handlerHelloSlash(s, i)
-			}
-		})
-	}
-
-}
 
 func handlerHelloSlash(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	switch i.ApplicationCommandData().Options[0].Name {
@@ -72,5 +53,45 @@ func handleHYBSubHello(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}})
 	if err != nil {
 		fmt.Println(err)
+	}
+}
+
+func handlerTestSlash(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseModal,
+		Data: &discordgo.InteractionResponseData{
+			CustomID: "sign_up_" + i.Interaction.Member.User.ID,
+			Title:    "Sign Up",
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.TextInput{
+							CustomID:  "gh_user_" + i.Interaction.Member.User.ID,
+							Label:     "Github Username",
+							Style:     discordgo.TextInputShort,
+							Required:  true,
+							Value:     "Github Username",
+							MaxLength: 100,
+							MinLength: 2,
+						},
+					},
+				},
+				discordgo.ActionsRow{
+					//TODO: Figureout why required false is not making the compoent false
+					Components: []discordgo.MessageComponent{
+						discordgo.TextInput{
+							CustomID: "twitch_user_" + i.Interaction.Member.User.ID,
+							Label:    "Twitch Username",
+							Style:    discordgo.TextInputShort,
+							Value:    "Twitch",
+							Required: false,
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		fmt.Printf("Error %s", err.Error())
 	}
 }

@@ -1,1 +1,4 @@
-slash_schema.json
+schema/
+discord-bot
+.env
+.vscode

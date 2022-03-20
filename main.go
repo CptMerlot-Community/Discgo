@@ -6,13 +6,12 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/CptMerlot-Community/Discgo/commands"
 	"github.com/CptMerlot-Community/Discgo/handlers"
 	"github.com/CptMerlot-Community/Discgo/session"
 
 	"github.com/bwmarrin/discordgo"
 )
-
-var TOKEN = ""
 
 const APP_ID = ""
 const GUILD_ID = ""
@@ -21,7 +20,7 @@ var s *session.Session
 
 func init() {
 	s = session.CreateDiscordSession(APP_ID, GUILD_ID)
-	BuildCommands(s)
+	commands.BuildCommands(s)
 	handlers.CreateSlashHandler(s)
 }
 

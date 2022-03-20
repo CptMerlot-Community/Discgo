@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"github.com/CptMerlot-Community/Discgo/session"
@@ -37,6 +37,10 @@ func BuildCommands(s *session.Session) {
 						Type:        discordgo.ApplicationCommandOptionSubCommand,
 					},
 				},
+			},
+			{
+				Name:        "test",
+				Description: "basic test command",
 			},
 		}
 	}
